@@ -7,6 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": {
+    "name": "Sriram Velamur",
+    "email": "techiev2@users.noreply.github.com",
+    "url": "http://github.com/techiev2"
+  },
+  "bugs": {
+    "url": "https://github.com/techiev2/emcache/issues",
+    "email": "techiev2@users.noreply.github.com"
+  },
+  "license": "GPL-3.0"
 }
