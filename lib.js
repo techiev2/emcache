@@ -47,7 +47,10 @@ class EmCache {
     process.on('beforeExit', () => { onExitDumper('processExit', caches) });
     const signals = ['SIGTERM', 'SIGINT', 'SIGQUIT']  // SIGKILL doesn't work on 14.x
     signals.map((signal) => {
-      process.on(`${signal}`, () => onExitDumper(signal, caches));
+      process.on(`${signal}`, () => {
+        onExitDumper(signal, caches);
+        process.exit(signal === 'SIGINT' ? 0 : 1)
+      });
     });
     if (process.env.DEBUG) { this.watcher = setInterval(() => { console.log(JSON.stringify(caches, null, 1)) }, 1000) }
     let queueWatcher = setInterval(() => {
