@@ -1,8 +1,8 @@
-#### emcache
+# emcache
 
 A minimal in-memory cache backed by a datastore of your choice.
 
-**Rationale**
+## Rationale
 
  - Why another in-memory cache now? 
     
@@ -27,37 +27,38 @@ A minimal in-memory cache backed by a datastore of your choice.
   No, not yet. It is as basic as it gets, at the moment. A setter with a fluent API that doubles as a delete, a getter, and an entire cache retrieval is what it supports at the top level API. `flush`, `stats`, and QoL APIs, are things I'd like over time.
 
 
-**API**
+## API
 
 - `get(key)`
 - `set(key, value, expiryInMS)`
 - `values`
 
-**Examples**
+## Examples
 
-  **Initialisation**
+### Initialisation
   ```javascript
   const cacheName = 'emcache'
   let cache = new EmCache({
     name: cacheName,
     inSink: null,
-    outSink: null
+    outSink: null,
+    syncOnSet: false
   })
 ```
 
-  **Set a key with an expiry.**
+### Set a key with an expiry.
 ```javascript
 cache.set('AMZ-1001', { name: 'Amazon', description: `Amazon test` }, 1000)
 ```
 
-  **Set a key and chain another set operation.**
+### Set a key and chain another set operation.**
 ```javascript
 cache
   .set('AMZ-1001', { name: 'Amazon', description: `Amazon test` }, 1000)
   .set('FK-1002', { name: 'Flipkart', description: 'Flipkart shopping' })
 ```
 
-  **Delete a key. Setting a null/undefined deletes the key.**
+### Delete a key. Setting a null/undefined deletes the key.**
 ```javascript
 const timer = setTimeout(() => {
   cache.set('AMZ-1001', null)  // DELETE operator
@@ -65,9 +66,19 @@ const timer = setTimeout(() => {
 }, 3000)
 ```
 
-  **inSink**
+## Parameters
 
-  The inSink parameter to the constructor provides a datasource to initialise the cache. This is a function that returns a data object that initialises the cache, like a redis hash. If not provided, MCache uses a `caches` file at the local path as a JSON serialised source.
+### syncOnSet
+
+  The syncOnSet boolean parameter provides a way to continuously sync/flush the cache to a store.
+
+  `Note: Use this parameter with caution since it introduces write time overheads.`
+
+### inSink
+
+The inSink parameter to the constructor provides a datasource to initialise the cache. This is a function that returns a data object that initialises the cache, like a redis hash.
+  
+If not provided, MCache uses a `caches` file at the local path as a JSON serialised source.
 ```javascript
   const { createClient } = require('redis');
   const client = createClient()
@@ -84,9 +95,11 @@ const timer = setTimeout(() => {
   })
 ```
 
-  **outSink**
+### outSink
 
-  The outSink parameter to the constructor provides a datasource to flush the cache into, when the process exits, terminates, or is terminated. This is a function that pushes data to your backing store. If not provided, MCache uses a `caches` file at the local path as a JSON serialised source.
+  The outSink parameter to the constructor provides a datasource to flush the cache into, when the process exits, terminates, or is terminated. This is a function that pushes data to your backing store.
+  
+If not provided, MCache uses a `caches` file at the local path as a JSON serialised source.
 ```javascript
   const { createClient } = require('redis');
   const client = createClient()
