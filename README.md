@@ -78,7 +78,7 @@ const timer = setTimeout(() => {
 
 The inSink parameter to the constructor provides a datasource to initialise the cache. This is a function that returns a data object that initialises the cache, like a redis hash.
   
-If not provided, MCache uses a `caches` file at the local path as a JSON serialised source.
+If not provided, EmCache uses a `caches` file at the local path as a JSON serialised source.
 ```javascript
   const { createClient } = require('redis');
   const client = createClient()
@@ -88,7 +88,7 @@ If not provided, MCache uses a `caches` file at the local path as a JSON seriali
     // const data = JSON.parse(await client.GET(cacheName || '{}'))
     return data || {}
   }
-  let cache = new MCache({
+  let cache = new EmCache({
     name: cacheName,
     inSink,
     outSink: null
@@ -99,7 +99,7 @@ If not provided, MCache uses a `caches` file at the local path as a JSON seriali
 
   The outSink parameter to the constructor provides a datasource to flush the cache into, when the process exits, terminates, or is terminated. This is a function that pushes data to your backing store.
   
-If not provided, MCache uses a `caches` file at the local path as a JSON serialised source.
+If not provided, EmCache uses a `caches` file at the local path as a JSON serialised source.
 ```javascript
   const { createClient } = require('redis');
   const client = createClient()
@@ -113,7 +113,7 @@ If not provided, MCache uses a `caches` file at the local path as a JSON seriali
     await client.HMSET(cacheName, Object.entries(data))
     // await client.SET(cacheName, JSON.stringify(data))
   }
-  let cache = new MCache({
+  let cache = new EmCache({
     name: cacheName,
     inSink,
     outSink
