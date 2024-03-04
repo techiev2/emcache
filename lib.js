@@ -29,6 +29,7 @@ class EmCache {
   watcher
   loaded = false
   syncOnSet
+  init
   queue = []
   /**
    * EmCache - A simple in-memory cache backed by a simpler JSON backed disk backup.
@@ -41,6 +42,7 @@ class EmCache {
     if (!name) throw new Error('Invalid invocation. Cache name is mandatory')
     this.key = name
     this.syncOnSet = syncOnSet
+    this.init = new Date().getTime()
     if (!isFunction(inSink)) inSink = defaultLoader;
     inSink().then((results) => { this.loaded = true;  caches = results; })
     onExitDumper = isFunction(outSink) ? outSink : defaultDumper
@@ -94,5 +96,26 @@ class EmCache {
   }
   get(key) { return (this.values || {})[key] }
   get values() { return caches[this.key] || {} }
+  get stats() {
+    const { values = {}} = this
+    const keys = Object.keys(values)
+    const { length: count } = keys
+    const expiries =
+      Object.fromEntries(
+        Object.entries(this.expiries)
+          .filter(([_, expiry]) => !!expiry)
+          .map(([key, expiryInMS]) => {
+            const expiresAt = this.init + expiryInMS
+            return [key, [{ expiryInMS, expiresAt}]]
+          })
+      )
+    return {
+      keys: {
+        count,
+        keys
+      },
+      expiries
+    }
+  }
 }
 module.exports = EmCache;
