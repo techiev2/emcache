@@ -32,5 +32,6 @@ cache
 const to = setTimeout(() => {
   console.log(cache.get('FK-002'))
   console.log(cache.set('FK-002').get('FK-002'))
+  console.log(JSON.stringify(cache.stats, null, 1))
   clearTimeout(to)
 }, 3000)
