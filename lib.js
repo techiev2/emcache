@@ -13,7 +13,8 @@ async function defaultLoader() {
     })
   })
 }
-let onExitDumper, caches;
+let onExitDumper
+let caches = {};
 function defaultDumper(signal, data) {
   try {
     writeFileSync('./caches', JSON.stringify(data || caches))
@@ -87,6 +88,7 @@ class EmCache {
     if (this.expiries[key]) {
       setTimeout(() => {
         delete caches[this.key][key]
+        delete this.expiries[key]
         this.watcher && clearInterval(this.watcher)
         onExitDumper(null, caches)
       }, this.expiries[key])
