@@ -32,6 +32,7 @@ A minimal in-memory cache backed by a datastore of your choice.
 - `get(key)`
 - `set(key, value, expiryInMS)`
 - `values`
+- `stats`
 
 ## Examples
 
@@ -51,19 +52,33 @@ A minimal in-memory cache backed by a datastore of your choice.
 cache.set('AMZ-1001', { name: 'Amazon', description: `Amazon test` }, 1000)
 ```
 
-### Set a key and chain another set operation.**
+### Set a key and chain another set operation.
 ```javascript
 cache
   .set('AMZ-1001', { name: 'Amazon', description: `Amazon test` }, 1000)
   .set('FK-1002', { name: 'Flipkart', description: 'Flipkart shopping' })
 ```
 
-### Delete a key. Setting a null/undefined deletes the key.**
+### Delete a key. Setting a null/undefined deletes the key.
 ```javascript
 const timer = setTimeout(() => {
   cache.set('AMZ-1001', null)  // DELETE operator
   clearTimeout(timer)
 }, 3000)
+```
+
+### Get the stats of a particular cache.
+```javascript
+console.log(JSON.stringify(cache.stats, null, 1))
+{
+ "keys": {
+  "count": 1,
+  "keys": [
+   "TE-003"
+  ]
+ },
+ "expiries": {}
+}
 ```
 
 ## Parameters
