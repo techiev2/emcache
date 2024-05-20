@@ -1,7 +1,7 @@
 {
   "name": "emcache",
   "version": "1.1.2",
-  "description": "",
+  "description": "A minimal in-memory cache backed by a datastore of your choice.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
