@@ -1,0 +1,5 @@
+{
+  "name": "@techiev2/emcache",
+  "version": "1.1.2",
+  "exports": "./index.js"
+}
