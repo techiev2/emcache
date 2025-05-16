@@ -35,3 +35,13 @@ const to = setTimeout(() => {
   console.log(JSON.stringify(cache.stats, null, 1))
   clearTimeout(to)
 }, 3000)
+
+let i = 0
+setInterval(() => {
+  if (i === 1) {
+    cache.flush()
+  } else {
+    console.log(JSON.stringify(cache.stats, null, 0))
+  }
+  i++
+}, 1000)
