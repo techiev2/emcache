@@ -106,7 +106,7 @@ class EmCache {
     const expiries =
       Object.fromEntries(
         Object.entries(this.expiries)
-          .filter(([_, expiry]) => !!expiry)
+          .filter(([key, expiry]) => !!expiry && !!values[key])
           .map(([key, expiryInMS]) => {
             const expiresAt = this.init + expiryInMS
             return [key, [{ expiryInMS, expiresAt}]]
